@@ -1,0 +1,94 @@
+# ~/.config/starship.toml
+
+add_newline = true
+command_timeout = 1000
+# format = """$os$username$hostname$kubernetes$directory$git_branch$git_status"""
+
+# Change the default prompt format
+format = """\
+[╭╴](238)$all\
+[╰──](238)$character"""
+
+# ---
+
+
+[os.symbols]
+Windows = ' '
+Arch = '󰣇'
+Ubuntu = ''
+Macos = '󰀵'
+
+# ---y
+
+# Shows the username
+[username]
+style_user = 'white bold'
+style_root = 'black bold'
+format = '[$user]($style) '
+disabled = false
+show_always = false
+
+# Shows the hostname
+[hostname]
+ssh_only = true
+format = 'on [$hostname](bold yellow) '
+disabled = false
+
+# Shows current directory
+[directory]
+# truncation_length = 22
+home_symbol = '󰋜 ~'
+read_only_style = '197'
+read_only = '  '
+format = 'at [$path]($style)[$read_only]($read_only_style) '
+
+# Shows current git branch
+[git_branch]
+format = 'on [$symbol$branch]($style)'
+
+# Shows current git status
+[git_status]
+format = '[$ahead_behind$staged]($style) '
+style = 'bold red'
+conflicted = '🏳'
+up_to_date = ''
+untracked = ' '
+ahead = '⇡${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+behind = '⇣${count}'
+stashed = ' '
+modified = ' '
+staged = ' [++\($count\)](bold red)'
+renamed = '襁 '
+deleted = ' '
+
+# Shows kubernetes context and namespace
+[kubernetes]
+format = 'via [󱃾 $context\($namespace\)](bold purple) '
+disabled = false
+
+# ---
+
+[package]
+disabled = true
+
+[vagrant]
+disabled = true
+
+[docker_context]
+disabled = true
+
+[helm]
+disabled = true
+
+[python]
+disabled = true
+
+[nodejs]
+disabled = false
+
+[ruby]
+disabled = true
+
+[terraform]
+disabled = true
