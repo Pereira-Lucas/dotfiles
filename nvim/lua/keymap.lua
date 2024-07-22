@@ -26,3 +26,56 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Test en cours
+vim.keymap.set('n', '<leader>sc', function()
+  vim.ui.input({ prompt = 'Recherche : ' }, function(search)
+    if search == nil or search == '' then
+      return
+    end
+
+    search = search:gsub(' ', '+')
+
+    local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+
+    local Popup = require 'nui.popup'
+    local event = require('nui.utils.autocmd').event
+
+    local popup = Popup {
+      enter = true,
+      focusable = true,
+      border = {
+        style = 'rounded',
+      },
+      position = '50%',
+      size = {
+        width = '80%',
+        height = '80%',
+      },
+    }
+
+    -- mount/open the component
+    popup:mount()
+
+    -- unmount component when cursor leaves buffer
+    popup:on(event.BufLeave, function()
+      popup:unmount()
+    end)
+
+    -- unmount component when pressing q
+    vim.api.nvim_buf_set_keymap(popup.bufnr, 'n', 'q', '<cmd>q<cr>', { noremap = true, silent = true })
+
+    vim.fn.jobstart({ 'curl', 'cht.sh/' .. filetype .. '/' .. search .. '?T' }, {
+      on_stdout = function(err, data)
+        if data then
+          vim.api.nvim_buf_set_lines(popup.bufnr, -1, -1, false, data)
+        end
+      end,
+      on_exit = function()
+        vim.api.nvim_buf_set_option(popup.bufnr, 'filetype', filetype)
+        vim.api.nvim_buf_set_option(popup.bufnr, 'modifiable', false)
+        vim.api.nvim_buf_set_option(popup.bufnr, 'readonly', true)
+      end,
+    })
+  end)
+end)

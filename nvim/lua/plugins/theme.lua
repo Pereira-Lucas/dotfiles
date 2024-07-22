@@ -8,6 +8,16 @@ return {
         enabled = true,
         indenscope_color = 'lavender',
       },
+      dap = false, -- Les couleurs sont définis manuellement dans la configuration du DAP
+    },
+    highlight_overrides = {
+      all = function(colors)
+        return {
+          DapBreakpoint = { fg = colors.red },
+          DapLogPoint = { fg = colors.subtext1 },
+          DapStopped = { fg = colors.green },
+        }
+      end,
     },
   },
   config = function(_, opts)
