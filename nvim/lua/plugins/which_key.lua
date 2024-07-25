@@ -6,7 +6,6 @@ return { -- Useful plugin to show you pending keybinds.
 
     -- Document existing key chains
     require('which-key').add {
-      { '<down>', hidden = true },
       { '<leader>c', group = '[C]ode' },
       { '<leader>c_', hidden = true },
       { '<leader>d', group = '[D]ocument' },
@@ -24,6 +23,8 @@ return { -- Useful plugin to show you pending keybinds.
       { '<left>', hidden = true },
       { '<right>', hidden = true },
       { '<up>', hidden = true },
+      { '<down>', hidden = true },
+      { 'p_', hidden = true },
     }
   end,
 }

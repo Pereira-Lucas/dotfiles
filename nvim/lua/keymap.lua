@@ -36,7 +36,7 @@ vim.keymap.set('n', '<leader>sc', function()
 
     search = search:gsub(' ', '+')
 
-    local filetype = vim.api.nvim_buf_get_option(0, 'filetype')
+    local filetype = vim.api.nvim_get_option_value('filetype', { buf = 0 })
 
     local Popup = require 'nui.popup'
     local event = require('nui.utils.autocmd').event
@@ -72,9 +72,9 @@ vim.keymap.set('n', '<leader>sc', function()
         end
       end,
       on_exit = function()
-        vim.api.nvim_buf_set_option(popup.bufnr, 'filetype', filetype)
-        vim.api.nvim_buf_set_option(popup.bufnr, 'modifiable', false)
-        vim.api.nvim_buf_set_option(popup.bufnr, 'readonly', true)
+        vim.api.nvim_set_option_value('filetype', filetype, { buf = popup.bufnr })
+        vim.api.nvim_set_option_value('modifiable', false, { buf = popup.bufnr })
+        vim.api.nvim_set_option_value('readonly', true, { buf = popup.bufnr })
       end,
     })
   end)
