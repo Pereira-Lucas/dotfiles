@@ -79,7 +79,7 @@ return {
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
       vim.keymap.set('n', '<leader>sm', function()
-        builtin.lsp_document_symbols { symbols = { 'function' } }
+        builtin.lsp_document_symbols { symbols = { 'function', 'method' }, symbol_width = 60 }
       end, { desc = '[S]earch [M]ethods' })
 
       -- Slightly advanced example of overriding default behavior and theme
