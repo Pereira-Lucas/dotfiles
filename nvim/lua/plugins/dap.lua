@@ -88,6 +88,7 @@ return {
             })
           end
           require('dap').continue()
+          require('dapui').setup()
         end,
         desc = 'Run with Args',
       },
@@ -141,6 +142,15 @@ return {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
     opts = {},
+    keys = {
+      {
+        '<leader>du',
+        function()
+          require('dapui').toggle()
+        end,
+        desc = '[D]ap [U]I',
+      },
+    },
   },
   {
     'Joakker/lua-json5',
