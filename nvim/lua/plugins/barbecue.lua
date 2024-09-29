@@ -8,5 +8,6 @@ return {
   },
   opts = {
     theme = 'catppuccin',
+    show_dirname = false,
   },
 }

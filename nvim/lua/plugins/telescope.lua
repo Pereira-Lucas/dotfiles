@@ -42,6 +42,7 @@ return {
               ['<C-k>'] = actions.move_selection_previous,
               ['<C-o>'] = actions.select_vertical,
               ['<C-d>'] = actions.delete_buffer,
+              ['<C-s>'] = { '<CMD>w<CR>', type = 'command' },
             },
           },
         },
