@@ -9,6 +9,9 @@ vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set('i', 'kj', '<Esc>', { noremap = true })
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
+vim.keymap.set('n', 'go', 'o<Esc>k', { noremap = true })
+vim.keymap.set('n', 'gO', 'O<Esc>j', { noremap = true })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
