@@ -9,8 +9,15 @@ vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
 vim.keymap.set('i', 'kj', '<Esc>', { noremap = true })
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
+-- New line before/after
 vim.keymap.set('n', 'go', 'o<Esc>k', { noremap = true })
 vim.keymap.set('n', 'gO', 'O<Esc>j', { noremap = true })
+
+-- Move text up and down
+vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { noremap = true })
+vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { noremap = true })
+vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { noremap = true })
+vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { noremap = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -26,10 +33,11 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+--  NOTE: Deactivated because of harpoon
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Test en cours
 vim.keymap.set('n', '<leader>sc', function()
