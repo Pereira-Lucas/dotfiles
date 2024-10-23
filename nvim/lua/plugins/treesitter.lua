@@ -3,7 +3,7 @@ return {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
   opts = {
-    ensure_installed = { 'bash', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'vue', 'javascript', 'jsdoc' },
+    ensure_installed = { 'bash', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'vue', 'javascript', 'jsdoc', 'sql' },
 
     auto_install = true,
     highlight = {
