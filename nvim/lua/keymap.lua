@@ -3,6 +3,7 @@ vim.g.maplocalleader = ' '
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', 's', '<Nop>')
+vim.keymap.set('i', '<C-c>', '<Esc>')
 
 vim.keymap.set('i', 'jj', '<Esc>', { noremap = true })
 vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
