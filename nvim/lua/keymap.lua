@@ -3,6 +3,8 @@ vim.g.maplocalleader = ' '
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', 's', '<Nop>')
+vim.keymap.set('n', 'x', '"_x')
+vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('i', '<C-c>', '<Esc>')
 
 vim.keymap.set('i', 'jj', '<Esc>', { noremap = true })
@@ -19,6 +21,10 @@ vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { noremap = true })
 vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { noremap = true })
 vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { noremap = true })
 vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { noremap = true })
+
+-- Visual shifting does not exit Visual mode
+vim.keymap.set('v', '<', '<gv')
+vim.keymap.set('v', '>', '>gv')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
