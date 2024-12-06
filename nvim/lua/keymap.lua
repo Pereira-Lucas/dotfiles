@@ -7,9 +7,6 @@ vim.keymap.set('n', 'x', '"_x')
 vim.keymap.set('v', 'p', '"_dP')
 vim.keymap.set('i', '<C-c>', '<Esc>')
 
-vim.keymap.set('i', 'jj', '<Esc>', { noremap = true })
-vim.keymap.set('i', 'jk', '<Esc>', { noremap = true })
-vim.keymap.set('i', 'kj', '<Esc>', { noremap = true })
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
 -- New line before/after
