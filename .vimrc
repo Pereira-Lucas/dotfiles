@@ -14,6 +14,7 @@ set scrolloff=15
 set hlsearch
 set ignorecase
 syntax on
+colorscheme slate
 set nocompatible
 set title
 set noerrorbells
