@@ -41,6 +41,7 @@ return {
               ['<C-j>'] = actions.move_selection_next,
               ['<C-k>'] = actions.move_selection_previous,
               ['<C-o>'] = actions.select_vertical,
+              ['<C-O>'] = actions.select_horizontal,
               ['<C-d>'] = actions.delete_buffer,
               ['<C-s>'] = { '<CMD>w<CR>', type = 'command' },
             },
@@ -48,6 +49,7 @@ return {
         },
         -- pickers = {}
         extensions = {
+          fzf = {},
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
