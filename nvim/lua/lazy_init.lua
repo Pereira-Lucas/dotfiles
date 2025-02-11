@@ -9,6 +9,35 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  {
+    'nvim-lua/plenary.nvim',
+    priority = 1000,
+    config = function()
+      if vim.g.is_win32 == 1 then
+        local Path = require 'plenary.path'
+
+        local original_tostring = Path.__tostring
+        local original_absolute = Path.absolute
+        local original_new = Path.new
+
+        Path.new = function(...)
+          local args = { ... }
+          if #args == 0 then
+            return original_new(unpack(args))
+          end
+
+          for i, path in ipairs(args) do
+            if type(path) == 'string' then
+              args[i] = string.gsub(path, '/', '\\')
+            end
+          end
+
+          local result = original_new(unpack(args))
+          return result
+        end
+      end
+    end,
+  },
   'MunifTanjim/nui.nvim',
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
