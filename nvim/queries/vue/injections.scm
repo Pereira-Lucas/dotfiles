@@ -1,12 +1,8 @@
 ; <route lang="json">
 (element
   (start_tag
-    (attribute
-      (attribute_name) @_lang
-      (quoted_attribute_value
-        (attribute_value) @_json)))
+    (tag_name) @_tag)
   (text) @injection.content
-  (#eq? @_lang "lang")
-  (#eq? @_json "json")
+  (#eq? @_tag "route")
   (#set! injection.language "json"))
 
