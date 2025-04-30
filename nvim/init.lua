@@ -1,4 +1,5 @@
 require 'options'
+require 'filetypes'
 require 'keymap'
 require 'lazy_init'
 
