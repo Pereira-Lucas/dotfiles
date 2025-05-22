@@ -8,7 +8,7 @@ end
 vim.o.rtp = lazypath .. ',' .. vim.o.rtp
 
 require('lazy').setup {
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'nmac427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
   {
     'nvim-lua/plenary.nvim',
     priority = 1000,
