@@ -10,3 +10,14 @@ vim.filetype.add {
     ['%.env%.[%w_.-]+'] = 'sh',
   },
 }
+
+-- Sequelize files
+
+vim.filetype.add {
+  extension = {
+    sequelizerc = 'javascript',
+  },
+  filename = {
+    ['.sequelizerc'] = 'javascript',
+  },
+}
