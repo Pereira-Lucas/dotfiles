@@ -33,9 +33,6 @@ return {
           borderchars = { ' ' },
           mappings = {
             i = {
-              ['jj'] = actions.close, -- Allow binding jj to Esc inside telescope to close
-              ['jk'] = actions.close,
-              ['kj'] = actions.close,
               ['<C-u>'] = false, -- Clear search text
               ['<C-j>'] = actions.move_selection_next,
               ['<C-k>'] = actions.move_selection_previous,
