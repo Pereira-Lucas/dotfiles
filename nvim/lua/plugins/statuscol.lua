@@ -9,7 +9,6 @@ return {
 
     require('statuscol').setup {
       relculright = true,
-      thousands = ' ',
       ft_ignore = {
         'aerial',
         'avante',
