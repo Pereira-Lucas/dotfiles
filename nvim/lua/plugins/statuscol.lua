@@ -26,15 +26,10 @@ return {
           },
           click = 'v:lua.ScSa',
         },
-        -- {
-        --   sign = {
-        --     namespace = { 'gitsigns' },
-        --     colwidth = 1,
-        --     auto = false,
-        --   },
-        --   click = 'v:lua.ScSa',
-        -- },
-
+        {
+          sign = { name = { 'DapBreakpoint.*' }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
+          click = 'v:lua.ScSa',
+        },
         {
           sign = { namespace = { 'diagnostic.signs' }, maxwidth = 1, wrap = true },
           click = 'v:lua.ScSa',
