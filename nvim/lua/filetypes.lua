@@ -12,7 +12,6 @@ vim.filetype.add {
 }
 
 -- Sequelize files
-
 vim.filetype.add {
   extension = {
     sequelizerc = 'javascript',

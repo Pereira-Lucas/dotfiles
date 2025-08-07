@@ -12,8 +12,6 @@ return { -- Useful plugin to show you pending keybinds.
       { '<leader>d_', hidden = true },
       { '<leader>g', group = '[G]it' },
       { '<leader>g_', hidden = true },
-      { '<leader>o', group = '[O]llama' },
-      { '<leader>o_', hidden = true },
       { '<leader>r', group = '[R]ename' },
       { '<leader>r_', hidden = true },
       { '<leader>s', group = '[S]earch' },
@@ -24,7 +22,7 @@ return { -- Useful plugin to show you pending keybinds.
       { '<right>', hidden = true },
       { '<up>', hidden = true },
       { '<down>', hidden = true },
-      { 'p_', hidden = true },
+      { '<leader>p', hidden = true },
     }
   end,
 }
