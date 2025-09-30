@@ -108,7 +108,7 @@ return {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
-      local servers = {
+      local mason_servers = {
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
@@ -131,7 +131,7 @@ return {
               },
             },
           },
-          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+          filetypes = { 'javascriptreact', 'typescriptreact', 'vue' },
         },
         vue_ls = {},
         lua_ls = {
@@ -150,6 +150,17 @@ return {
         },
       }
 
+      local other_servers = {
+        ts_go_ls = {
+          -- npm install -g @typescript/native-preview
+          cmd = { 'npx', 'tsgo', '--lsp', '--stdio' },
+          root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json' },
+          filetypes = { 'typescript', 'javascript' },
+        },
+      }
+
+      local servers = vim.tbl_deep_extend('force', mason_servers, other_servers)
+
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -158,27 +169,17 @@ return {
       --  You can press `g?` for help in this menu.
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = vim.tbl_keys(mason_servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            print(server_name)
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      for server_name, server_config in pairs(servers) do
+        server_config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {})
+        vim.lsp.config(server_name, server_config)
+        vim.lsp.enable(server_name)
+      end
     end,
   },
   {
