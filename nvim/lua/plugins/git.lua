@@ -7,6 +7,7 @@ return {
       { '<leader>gb', '<cmd>Gitsigns blame_line<cr>', desc = '[G]it [B]lame' },
       { '<leader>gl', '<cmd>Gitsigns setqflist<cr>', desc = '[G]it [L]ist changes' },
       { '<leader>gp', '<cmd>Gitsigns preview_hunk_inline<cr>', desc = '[G]it [P]review hunk' },
+      { '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>', desc = '[G]it [R]eset hunk' },
     },
   },
   {
