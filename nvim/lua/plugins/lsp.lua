@@ -16,7 +16,15 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'mason-org/mason.nvim', opts = {} },
+      {
+        'mason-org/mason.nvim',
+        opts = {
+          registries = {
+            'file:' .. vim.fn.stdpath 'config' .. '/mason-registry',
+            'github:mason-org/mason-registry',
+          },
+        },
+      },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'saghen/blink.cmp',
@@ -97,49 +105,57 @@ return {
       -- Enable the following language servers
       local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
       local typescript_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/typescript/lib'
+      local tsgo_path = vim.fn.expand '$MASON/packages/ts-go-ls/node_modules/@typescript/native-preview/bin/tsgo.js'
 
       ---@type vim.lsp.Config
-      local mason_servers = {
+      local servers = {
         rust_analyzer = {},
         bashls = {},
         pylsp = {},
-        oxlint = {},
-        ts_ls = {
-          init_options = {
-            plugins = {
-              {
-                name = '@vue/typescript-plugin',
-                location = vue_language_server_path,
-                languages = { 'vue' },
-              },
-            },
-          },
-          settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-            javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-          },
-          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+        -- oxlint = {
+        --   cmd = { _G.npx_executable, 'oxc_language_server' },
+        -- },
+        ts_go_ls = {
+          cmd = { 'npx', tsgo_path, '--lsp', '--stdio' },
+          root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json' },
+          filetypes = { 'typescript', 'javascript' },
         },
+        -- ts_ls = {
+        --   init_options = {
+        --     plugins = {
+        --       {
+        --         name = '@vue/typescript-plugin',
+        --         location = vue_language_server_path,
+        --         languages = { 'vue' },
+        --       },
+        --     },
+        --   },
+        --   settings = {
+        --     typescript = {
+        --       inlayHints = {
+        --         includeInlayParameterNameHints = 'all',
+        --         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        --         includeInlayFunctionParameterTypeHints = true,
+        --         includeInlayVariableTypeHints = true,
+        --         includeInlayPropertyDeclarationTypeHints = true,
+        --         includeInlayFunctionLikeReturnTypeHints = true,
+        --         includeInlayEnumMemberValueHints = true,
+        --       },
+        --     },
+        --     javascript = {
+        --       inlayHints = {
+        --         includeInlayParameterNameHints = 'all',
+        --         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+        --         includeInlayFunctionParameterTypeHints = true,
+        --         includeInlayVariableTypeHints = true,
+        --         includeInlayPropertyDeclarationTypeHints = true,
+        --         includeInlayFunctionLikeReturnTypeHints = true,
+        --         includeInlayEnumMemberValueHints = true,
+        --       },
+        --     },
+        --   },
+        --   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+        -- },
         vue_ls = {},
         lua_ls = {
           -- cmd = {...},
@@ -157,22 +173,12 @@ return {
         },
       }
 
-      local other_servers = {
-        -- ts_go_ls = {
-        --   -- npm install -g @typescript/native-preview
-        --   cmd = { 'npx', 'tsgo', '--lsp', '--stdio' },
-        --   root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json' },
-        --   filetypes = { 'typescript', 'javascript' },
-        -- },
-      }
-
-      local servers = vim.tbl_deep_extend('force', mason_servers, other_servers)
-
-      local ensure_installed = vim.tbl_keys(mason_servers or {})
+      local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
+        'stylua',
         'prettier',
       })
+
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       for server_name, server_config in pairs(servers) do

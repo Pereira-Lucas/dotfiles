@@ -18,6 +18,10 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
 })
 
+vim.api.nvim_create_user_command('Format', function(args)
+  require('conform').format { bufnr = args.buf }
+end, {})
+
 -- TODO: voir ce truc
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=4 sts=4 sw=4 et
