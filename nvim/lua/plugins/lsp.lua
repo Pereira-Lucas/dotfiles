@@ -16,15 +16,7 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      {
-        'mason-org/mason.nvim',
-        opts = {
-          registries = {
-            'file:' .. vim.fn.stdpath 'config' .. '/mason-registry',
-            'github:mason-org/mason-registry',
-          },
-        },
-      },
+      { 'mason-org/mason.nvim', opts = {} },
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'saghen/blink.cmp',
@@ -105,7 +97,7 @@ return {
       -- Enable the following language servers
       local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
       local typescript_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/typescript/lib'
-      local tsgo_path = vim.fn.expand '$MASON/packages/ts-go-ls/node_modules/@typescript/native-preview/bin/tsgo.js'
+      local tsgo_path = vim.fn.expand '$MASON/packages/tsgo/node_modules/@typescript/native-preview/bin/tsgo.js'
 
       ---@type vim.lsp.Config
       local servers = {
@@ -115,7 +107,7 @@ return {
         -- oxlint = {
         --   cmd = { _G.npx_executable, 'oxc_language_server' },
         -- },
-        ts_go_ls = {
+        tsgo = {
           cmd = { 'npx', tsgo_path, '--lsp', '--stdio' },
           root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json' },
           filetypes = { 'typescript', 'javascript' },
