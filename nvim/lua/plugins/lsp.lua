@@ -101,7 +101,6 @@ return {
 
       -- Enable the following language servers
       local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
-      local typescript_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/typescript/lib'
       local tsgo_path = vim.fn.expand '$MASON/packages/tsgo/node_modules/@typescript/native-preview/bin/tsgo.js'
 
       ---@type vim.lsp.Config
@@ -109,50 +108,46 @@ return {
         rust_analyzer = {},
         bashls = {},
         pylsp = {},
-        -- oxlint = {
-        --   cmd = { _G.npx_executable, 'oxc_language_server' },
-        -- },
-        tsgo = {
-          cmd = { 'npx', tsgo_path, '--lsp', '--stdio' },
-          root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json' },
-          filetypes = { 'typescript', 'javascript' },
+        oxlint = {},
+        tsgo = {},
+        somesass_ls = {},
+        ts_ls = {
+          init_options = {
+            plugins = {
+              {
+                name = '@vue/typescript-plugin',
+                location = vue_language_server_path,
+                languages = { 'vue' },
+              },
+            },
+          },
+          settings = {
+            typescript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+            javascript = {
+              inlayHints = {
+                includeInlayParameterNameHints = 'all',
+                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                includeInlayFunctionParameterTypeHints = true,
+                includeInlayVariableTypeHints = true,
+                includeInlayPropertyDeclarationTypeHints = true,
+                includeInlayFunctionLikeReturnTypeHints = true,
+                includeInlayEnumMemberValueHints = true,
+              },
+            },
+          },
+          -- filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+          filetypes = { 'vue' },
         },
-        -- ts_ls = {
-        --   init_options = {
-        --     plugins = {
-        --       {
-        --         name = '@vue/typescript-plugin',
-        --         location = vue_language_server_path,
-        --         languages = { 'vue' },
-        --       },
-        --     },
-        --   },
-        --   settings = {
-        --     typescript = {
-        --       inlayHints = {
-        --         includeInlayParameterNameHints = 'all',
-        --         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        --         includeInlayFunctionParameterTypeHints = true,
-        --         includeInlayVariableTypeHints = true,
-        --         includeInlayPropertyDeclarationTypeHints = true,
-        --         includeInlayFunctionLikeReturnTypeHints = true,
-        --         includeInlayEnumMemberValueHints = true,
-        --       },
-        --     },
-        --     javascript = {
-        --       inlayHints = {
-        --         includeInlayParameterNameHints = 'all',
-        --         includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-        --         includeInlayFunctionParameterTypeHints = true,
-        --         includeInlayVariableTypeHints = true,
-        --         includeInlayPropertyDeclarationTypeHints = true,
-        --         includeInlayFunctionLikeReturnTypeHints = true,
-        --         includeInlayEnumMemberValueHints = true,
-        --       },
-        --     },
-        --   },
-        --   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-        -- },
         vue_ls = {},
         lua_ls = {
           -- cmd = {...},
@@ -193,7 +188,7 @@ return {
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { javascript = true, }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
@@ -211,8 +206,8 @@ return {
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
-        javascript = { 'prettier', stop_after_first = true },
-        typescript = { 'prettier' },
+        javascript = { 'oxlint', stop_after_first = true },
+        typescript = { 'oxlint' },
       },
     },
   },
