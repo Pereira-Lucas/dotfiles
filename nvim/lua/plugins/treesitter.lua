@@ -3,25 +3,41 @@ return {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    branch = 'main',
     opts = {
-      ensure_installed = { 'bash', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'vue', 'javascript', 'jsdoc', 'sql' },
-
-      auto_install = true,
+      -- NOTE: There is no more config to set since TS:main
+      -- Theses are all customs
+      --
+      ensure_installed = { 'bash', 'html', 'css', 'lua', 'markdown', 'vim', 'vimdoc', 'vue', 'javascript', 'jsdoc', 'sql' },
       highlight = {
-        enable = true,
-        disable = function(_, buf)
-          local max_filesize = 100 * 1024 -- 100 KB
+        disable = function(buf)
+          local max_filesize = 1024 * 1024 -- 1 MB
           local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
           if ok and stats and stats.size > max_filesize then
             return true
           end
+          return false
         end,
       },
-      indent = { enable = true },
     },
     config = function(_, opts)
-      require('nvim-treesitter.install').compilers = { 'clang' }
-      require('nvim-treesitter.configs').setup(opts)
+      local treesitter = require 'nvim-treesitter'
+
+      treesitter.setup(opts)
+
+      treesitter.install(opts.ensure_installed)
+
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { '*' },
+        callback = function(event)
+          local parser_found = vim.treesitter.get_parser(nil, nil, { error = false })
+          local disabled = opts.highlight.disable(event.buf)
+
+          if parser_found and not disabled then
+            vim.treesitter.start()
+          end
+        end,
+      })
     end,
   },
   {
