@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd('VimEnter', {
   desc = 'Launch a typing test when opening Vim',
   callback = function()
-    vim.cmd 'Typr'
+    -- vim.cmd 'Typr'
   end,
 })
 

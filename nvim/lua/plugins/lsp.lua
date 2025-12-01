@@ -20,7 +20,7 @@ return {
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'saghen/blink.cmp',
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim', opts = { notification = { override_vim_notify = true } } },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -79,7 +79,19 @@ return {
           -- Remove the highlight from LSP
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client then
+            -- Disable syntax color from the LSP
             client.server_capabilities.semanticTokensProvider = nil
+
+            local languages_inlay = { 'ts_ls', 'tsgo' }
+
+            if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+              for i, v in ipairs(languages_inlay) do
+                if v == client.name then
+                  vim.lsp.inlay_hint.enable(true)
+                  break
+                end
+              end
+            end
           end
 
           -- When you move your cursor, the highlights will be cleared (the second autocommand).
@@ -109,7 +121,21 @@ return {
         bashls = {},
         pylsp = {},
         oxlint = {},
-        tsgo = {},
+        tsgo = {
+          settings = {
+            typescript = {
+              inlayHints = {
+                parameterNames = {
+                  enabled = 'all',
+                  suppressWhenArgumentMatchesName = true,
+                },
+                enumMemberValues = {
+                  enabled = true,
+                },
+              },
+            },
+          },
+        },
         somesass_ls = {},
         ts_ls = {
           init_options = {
@@ -126,10 +152,6 @@ return {
               inlayHints = {
                 includeInlayParameterNameHints = 'all',
                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
                 includeInlayEnumMemberValueHints = true,
               },
             },
@@ -137,10 +159,6 @@ return {
               inlayHints = {
                 includeInlayParameterNameHints = 'all',
                 includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
                 includeInlayEnumMemberValueHints = true,
               },
             },
