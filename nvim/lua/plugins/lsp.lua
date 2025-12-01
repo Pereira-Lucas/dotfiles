@@ -20,7 +20,6 @@ return {
       'mason-org/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'saghen/blink.cmp',
-      { 'j-hui/fidget.nvim', opts = { notification = { override_vim_notify = true } } },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
