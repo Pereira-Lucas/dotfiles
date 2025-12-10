@@ -81,15 +81,8 @@ return {
             -- Disable syntax color from the LSP
             client.server_capabilities.semanticTokensProvider = nil
 
-            local languages_inlay = { 'ts_ls', 'tsgo' }
-
             if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-              for i, v in ipairs(languages_inlay) do
-                if v == client.name then
-                  vim.lsp.inlay_hint.enable(true)
-                  break
-                end
-              end
+              vim.lsp.inlay_hint.enable(true)
             end
           end
 
@@ -177,6 +170,10 @@ return {
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               diagnostics = { disable = { 'missing-fields' } },
+              hint = {
+                enable = true,
+                arrayIndex = 'Disable',
+              },
             },
           },
         },
@@ -205,7 +202,7 @@ return {
     opts = {
       notify_on_error = false,
       format_on_save = function(bufnr)
-        local disable_filetypes = { javascript = true, }
+        local disable_filetypes = { javascript = true }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
