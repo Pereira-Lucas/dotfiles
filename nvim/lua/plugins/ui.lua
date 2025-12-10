@@ -6,6 +6,18 @@ return {
     opts = {
       recipe = { 'default', { animate = false } },
       fadelevel = 0.4,
+      blocklist = {
+        treesitter_query = function(_win, cur)
+          if vim.bo[cur.bufnr].filetype == 'query' then
+            return true
+          end
+        end,
+        popup_window = function()
+          if vim.api.nvim_win_get_config(0).relative ~= '' then
+            return true
+          end
+        end,
+      },
     },
   },
   {
