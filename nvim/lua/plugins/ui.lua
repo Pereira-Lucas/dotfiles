@@ -7,6 +7,12 @@ return {
       recipe = { 'default', { animate = false } },
       fadelevel = 0.4,
       blocklist = {
+        block_filetypes = function(_win, cur)
+          local filetypes = {
+            'query', -- Treesitter
+            'qf', -- Quickfix
+          }
+        end,
         treesitter_query = function(_win, cur)
           if vim.bo[cur.bufnr].filetype == 'query' then
             return true
