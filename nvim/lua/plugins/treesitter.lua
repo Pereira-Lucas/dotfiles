@@ -30,11 +30,16 @@ return {
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { '*' },
         callback = function(event)
-          local parser_found = vim.treesitter.get_parser(nil, nil, { error = false })
+          -- Ensure the buffer is loaded before attempting to get parser
+          if not vim.api.nvim_buf_is_loaded(event.buf) then
+            return
+          end
+
+          local parser_found = vim.treesitter.get_parser(event.buf, nil, { error = false })
           local disabled = opts.highlight.disable(event.buf)
 
           if parser_found and not disabled then
-            vim.treesitter.start()
+            vim.treesitter.start(event.buf)
           end
         end,
       })
