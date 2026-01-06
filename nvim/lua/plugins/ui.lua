@@ -12,10 +12,11 @@ return {
             'query', -- Treesitter
             'qf', -- Quickfix
           }
-        end,
-        treesitter_query = function(_win, cur)
-          if vim.bo[cur.bufnr].filetype == 'query' then
-            return true
+
+          for _, filetype in pairs(filetypes) do
+            if vim.bo[cur.bufnr].filetype == filetype then
+              return true
+            end
           end
         end,
         popup_window = function()
