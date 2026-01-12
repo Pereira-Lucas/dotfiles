@@ -1,6 +1,5 @@
 return {
   'luukvbaal/statuscol.nvim',
-  enable = false,
   dependencies = {
     'lewis6991/gitsigns.nvim',
   },
@@ -11,8 +10,6 @@ return {
       relculright = true,
       ft_ignore = {
         'aerial',
-        'avante',
-        'avanteInput',
         'help',
         'neo-tree',
         'toggleterm',
@@ -29,10 +26,20 @@ return {
         {
           sign = { name = { 'DapBreakpoint.*' }, maxwidth = 2, colwidth = 1, auto = true, wrap = true },
           click = 'v:lua.ScSa',
+          condition = {
+            function()
+              return vim.v.virtnum == 0
+            end,
+          },
         },
         {
           sign = { namespace = { 'diagnostic.signs' }, maxwidth = 1, wrap = true },
           click = 'v:lua.ScSa',
+          condition = {
+            function()
+              return vim.v.virtnum == 0
+            end,
+          },
         },
         {
           text = {
