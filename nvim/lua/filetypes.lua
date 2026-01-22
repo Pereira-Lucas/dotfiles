@@ -1,3 +1,11 @@
+-- ssh config
+vim.filetype.add {
+  pattern = {
+    ['.*/%.ssh/config%.d/.*'] = 'sshconfig',
+    ['.*/%.ssh/config'] = 'sshconfig',
+  },
+}
+
 -- Env files
 vim.filetype.add {
   extension = {
