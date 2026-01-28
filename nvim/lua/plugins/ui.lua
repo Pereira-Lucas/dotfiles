@@ -65,4 +65,14 @@ return {
       show_dirname = false,
     },
   },
+  {
+    -- Nvim Highlight Colors
+    -- Highlight colors in file
+    'brenoprata10/nvim-highlight-colors',
+    -- TODO: blink integration
+    event = { 'BufReadPre', 'BufNewFile' },
+    opts = {
+      render = 'background',
+    },
+  },
 }
