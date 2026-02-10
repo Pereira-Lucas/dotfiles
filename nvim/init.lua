@@ -18,6 +18,21 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'netrw',
+  callback = function()
+    vim.api.nvim_create_autocmd('CursorMoved', {
+      buffer = 0,
+      callback = function()
+        local row = vim.api.nvim_win_get_cursor(0)[1]
+        if row < 8 then
+          vim.api.nvim_win_set_cursor(0, { 8, 0 })
+        end
+      end,
+    })
+  end,
+})
+
 vim.api.nvim_create_user_command('Format', function(args)
   require('conform').format { bufnr = args.buf }
 end, {})
