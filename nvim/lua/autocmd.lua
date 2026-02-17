@@ -13,8 +13,12 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end,
 })
 
+local netrw_group = vim.api.nvim_create_augroup('netrw', { clear = true })
+
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'netrw',
+  group = netrw_group,
+  desc = 'Block the cursor to reach in the headers',
   callback = function()
     vim.api.nvim_create_autocmd('CursorMoved', {
       buffer = 0,
@@ -25,6 +29,17 @@ vim.api.nvim_create_autocmd('FileType', {
         end
       end,
     })
+  end,
+})
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = '*',
+  group = netrw_group,
+  desc = 'Close the preview when entering a file',
+  callback = function()
+    if vim.bo.filetype ~= 'netrw' and not vim.wo.previewwindow then
+      vim.cmd 'pclose'
+    end
   end,
 })
 
