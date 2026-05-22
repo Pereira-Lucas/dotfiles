@@ -124,6 +124,15 @@ return {
                 enumMemberValues = {
                   enabled = true,
                 },
+                functionLikeReturnTypes = {
+                  enabled = false,
+                },
+                propertyDeclarationTypes = {
+                  enabled = false,
+                },
+                variableTypes = {
+                  enabled = false,
+                },
               },
             },
           },
@@ -141,17 +150,21 @@ return {
           },
           settings = {
             typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayEnumMemberValueHints = true,
+              InlayHints = {
+                IncludeInlayParameterNameHints = 'all',
+                IncludeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                IncludeInlayFunctionLikeReturnTypes = false,
+                IncludeInlayPropertyDeclarationTypeHints = false,
+                IncludeInlayEnumMemberValueHints = true,
               },
             },
             javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = 'all',
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayEnumMemberValueHints = true,
+              InlayHints = {
+                IncludeInlayParameterNameHints = 'all',
+                IncludeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                IncludeInlayFunctionLikeReturnTypes = false,
+                IncludeInlayPropertyDeclarationTypeHints = false,
+                IncludeInlayEnumMemberValueHints = true,
               },
             },
           },
