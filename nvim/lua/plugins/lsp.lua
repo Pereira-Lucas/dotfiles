@@ -225,4 +225,26 @@ return {
       },
     },
   },
+  {
+    -- Generate function documentation
+    'danymat/neogen',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    config = function()
+      require('neogen').setup {
+        snippet_engine = 'luasnip', -- or "nvim" if you want builtin
+        placeholders_text = {
+          ['description'] = '',
+          ['parameter'] = 'any',
+        },
+        languages = {
+          javascript = { template = { annotation_convention = 'jsdoc' } },
+          typescript = { template = { annotation_convention = 'jsdoc' } },
+        },
+      }
+      vim.keymap.set('n', '<leader>cd', function()
+        require('neogen').generate { type = 'func' }
+      end, { desc = 'Generate JS[D]oc for function' })
+    end,
+  },
+  -- { 'dmmulroy/ts-error-translator.nvim', opts = {} },
 }
