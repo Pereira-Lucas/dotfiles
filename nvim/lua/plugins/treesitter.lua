@@ -8,7 +8,7 @@ return {
       -- NOTE: There is no more config to set since TS:main
       -- Theses are all customs
       --
-      ensure_installed = { 'bash', 'html', 'css', 'lua', 'markdown', 'vim', 'vimdoc', 'vue', 'javascript', 'jsdoc', 'sql' },
+      ensure_installed = { 'bash', 'html', 'css', 'lua', 'markdown', 'vim', 'vimdoc', 'vue', 'javascript', 'jsdoc', 'json', 'sql' },
       highlight = {
         disable = function(buf)
           local max_filesize = 1024 * 1024 -- 1 MB

@@ -162,6 +162,8 @@ return {
           },
           filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
         },
+        docker_language_server = {},
+        somesass_ls = {},
         ts_ls = {
           filetypes = { 'vue' },
           init_options = {
