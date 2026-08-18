@@ -45,3 +45,23 @@ vim.g.loaded_node_provider = 0
 vim.g.netrw_preview = 1
 vim.g.netrw_alto = 0
 vim.g.netrw_winsize = 40
+
+if vim.fn.has 'win32' == 1 then
+  vim.o.shelltemp = false
+  local shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
+  shellcmdflag = shellcmdflag .. '[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();'
+  shellcmdflag = shellcmdflag .. "$PSDefaultParameterValues['Out-File:Encoding']='utf8';"
+  vim.o.shellpipe = '> %s 2>&1; exit $LastExitCode'
+  vim.o.shellredir = '>%s 2>&1; exit $LastExitCode'
+  vim.o.shellquote = ''
+  vim.o.shellxquote = ''
+
+  if vim.fn.executable 'pwsh.exe' == 1 then
+    vim.o.shell = 'pwsh.exe'
+    shellcmdflag = shellcmdflag .. "$PSStyle.OutputRendering = 'PlainText';"
+    vim.env.__SuppressAnsiEscapeSequences = '1'
+  else
+    vim.o.shell = 'powershell.exe'
+  end
+  vim.o.shellcmdflag = shellcmdflag
+end
