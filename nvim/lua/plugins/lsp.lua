@@ -105,7 +105,18 @@ return {
 
       -- Enable the following language servers
       local vue_language_server_path = vim.fn.expand '$MASON/packages' .. '/vue-language-server' .. '/node_modules/@vue/language-server'
-      local tsgo_path = vim.fn.expand '$MASON/packages/tsgo/node_modules/@typescript/native-preview/bin/tsgo.js'
+
+      local function translate_ts_error(msg, code)
+        local ok, parser = pcall(require, 'ts-error-translator.parser')
+        if not ok then
+          return msg
+        end
+        local parsed = parser.parse_errors(code and ('TS' .. tostring(code) .. ': ' .. msg) or msg)
+        if #parsed > 0 and parsed[1].improvedError then
+          return parsed[1].improvedError.body
+        end
+        return msg
+      end
 
       ---@type vim.lsp.Config
       local servers = {
@@ -113,9 +124,22 @@ return {
         bashls = {},
         pylsp = {},
         oxlint = {},
-        tsgo = {
+        somesass_ls = {},
+        tsc = {
+          handlers = {
+            ['textDocument/diagnostic'] = function(err, result, ctx, config)
+              if result and result.items then
+                for _, diag in ipairs(result.items) do
+                  if diag.message then
+                    diag.message = translate_ts_error(diag.message, diag.code)
+                  end
+                end
+              end
+              return vim.lsp.handlers['textDocument/diagnostic'](err, result, ctx, config)
+            end,
+          },
           settings = {
-            typescript = {
+            ['js/ts'] = {
               inlayHints = {
                 parameterNames = {
                   enabled = 'all',
@@ -136,9 +160,10 @@ return {
               },
             },
           },
+          filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
         },
-        somesass_ls = {},
         ts_ls = {
+          filetypes = { 'vue' },
           init_options = {
             plugins = {
               {
@@ -148,28 +173,6 @@ return {
               },
             },
           },
-          settings = {
-            typescript = {
-              InlayHints = {
-                IncludeInlayParameterNameHints = 'all',
-                IncludeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                IncludeInlayFunctionLikeReturnTypes = false,
-                IncludeInlayPropertyDeclarationTypeHints = false,
-                IncludeInlayEnumMemberValueHints = true,
-              },
-            },
-            javascript = {
-              InlayHints = {
-                IncludeInlayParameterNameHints = 'all',
-                IncludeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                IncludeInlayFunctionLikeReturnTypes = false,
-                IncludeInlayPropertyDeclarationTypeHints = false,
-                IncludeInlayEnumMemberValueHints = true,
-              },
-            },
-          },
-          -- filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-          filetypes = { 'vue' },
         },
         vue_ls = {},
         lua_ls = {
@@ -182,7 +185,10 @@ return {
                 callSnippet = 'Replace',
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = {
+                globals = { 'vim' },
+                disable = { 'missing-fields' },
+              },
               hint = {
                 enable = true,
                 arrayIndex = 'Disable',
@@ -195,7 +201,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua',
-        'prettier',
+        'shfmt',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
@@ -216,20 +222,23 @@ return {
       notify_on_error = false,
       format_on_save = function(bufnr)
         local disable_filetypes = { javascript = true }
-        local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
-        else
-          lsp_format_opt = 'fallback'
         end
+
+        local name = vim.fs.basename(vim.api.nvim_buf_get_name(bufnr))
+        if name:match '^%.env' or name:match '%.env$' then
+          return nil
+        end
+
         return {
           timeout_ms = 500,
-          lsp_format = lsp_format_opt,
+          lsp_format = 'fallback',
         }
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        sh = { 'shellcheck' },
+        sh = { 'shfmt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -259,5 +268,5 @@ return {
       end, { desc = 'Generate JS[D]oc for function' })
     end,
   },
-  -- { 'dmmulroy/ts-error-translator.nvim', opts = {} },
+  { 'dmmulroy/ts-error-translator.nvim', opts = {} },
 }
