@@ -15,20 +15,23 @@ vim.api.nvim_create_autocmd('VimEnter', {
 
 local netrw_group = vim.api.nvim_create_augroup('netrw', { clear = true })
 
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'netrw',
+vim.api.nvim_create_autocmd('CursorMoved', {
   group = netrw_group,
   desc = 'Block the cursor to reach in the headers',
   callback = function()
-    vim.api.nvim_create_autocmd('CursorMoved', {
-      buffer = 0,
-      callback = function()
-        local row = vim.api.nvim_win_get_cursor(0)[1]
-        if row < 8 then
-          vim.api.nvim_win_set_cursor(0, { 8, 0 })
+    if vim.bo.filetype == 'netrw' then
+      local row = vim.api.nvim_win_get_cursor(0)[1]
+      local first_file_line
+      for i = 0, vim.api.nvim_buf_line_count(0) - 1 do
+        if not vim.api.nvim_buf_get_lines(0, i, i + 1, false)[1]:match('^"') then
+          first_file_line = i + 1
+          break
         end
-      end,
-    })
+      end
+      if first_file_line and row < first_file_line then
+        vim.api.nvim_win_set_cursor(0, { first_file_line, 0 })
+      end
+    end
   end,
 })
 
